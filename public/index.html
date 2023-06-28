@@ -1,0 +1,91 @@
+<!--
+ * @Author: shimmer
+ * @Date: 2023-06-25 13:37:32
+ * @LastEditors: shimmer
+ * @LastEditTime: 2023-06-26 10:45:55
+ * 
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- axios cdn -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/qs@6.10.2/dist/qs.js"></script>
+  </head>
+  <body>
+    <h1>Hello World</h1>
+    <input id="fileInput" type="file" multiple />
+    <button onclick="fileData()">点击</button>
+  </body>
+
+  <script>
+    // GET
+    // get请求参数在url最后
+    // async function urlParam() {
+    //   const res = await axios.get('/api/aaa/123');
+    //   console.log('urlParam', res);
+    // }
+    // urlParam();
+    // query 参数  query 是 url 中 ? 后的字符串
+    // async function getName() {
+    //   const res = await axios.get('/api/aaa/find?name=李四');
+    //   console.log('queryParam: ', res);
+    // }
+    // getName();
+
+    // POST
+    //body form urlencoded
+    axios.defaults.headers.post['Content-Type'] =
+      'application/x-www-form-urlencoded';
+
+    async function postBody() {
+      const res = await axios.post('/api/aaa', {
+        name: '王五',
+        age: 18,
+      });
+      console.log('form-urlencoded', res);
+    }
+
+    postBody();
+
+    async function postJsonBody() {
+      const res = await axios({
+        method: 'post',
+        url: '/api/aaa',
+        data: {
+          name: '王五',
+          age: 18,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log('json', res);
+    }
+
+    postJsonBody();
+    // file
+    const fileInput = document.getElementById('fileInput');
+
+    async function fileData() {
+      const data = new FormData();
+      data.set('name', '吕布');
+      data.set('age', 38);
+      data.set('file1', fileInput.files[0]);
+
+      const res = await axios({
+        method: 'post',
+        url: '/api/aaa/file',
+        data,
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      });
+      console.log('res: ', res);
+    }
+  </script>
+</html>
